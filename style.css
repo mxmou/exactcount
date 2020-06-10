@@ -1,0 +1,6 @@
+body {
+	font: 16px Roboto, sans-serif;
+	text-align: center;
+}
+body:not(.waiting) progress {display: none;}
+body:not(.complete) #result {display: none;}
