@@ -4,3 +4,8 @@ body {
 }
 body:not(.waiting) progress {display: none;}
 body:not(.complete) #result {display: none;}
+#footer {
+	color: #666;
+	margin-top: 48px;
+}
+#footer a {color: blue}
