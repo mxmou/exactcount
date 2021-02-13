@@ -1,4 +1,4 @@
-const proxy = "https://cors-anywhere.herokuapp.com/";
+const proxy = "https://mxmou-gh-ca.herokuapp.com/";
 const pageSize = 60;
 
 function error(message) {
