@@ -21,10 +21,8 @@ input, button {font: inherit;}
 body:not(.waiting) progress {display: none;}
 body:not(.complete) #result {display: none;}
 body:not(.error) #error {display: none;}
-#examples {
-	margin-top: 48px;
-	padding: 0;
-}
+h2 {margin-top: 48px;}
+#examples {padding: 0;}
 #examples > li {
 	display: block;
 	padding: 4px 0;
