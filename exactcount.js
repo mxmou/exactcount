@@ -1,11 +1,6 @@
-// const proxy = "https://mxmou-gh-ca.herokuapp.com/";
-const proxy = "http://localhost:8001/";
+const proxy = "https://mxmou-gh-ca.herokuapp.com/";
+// const proxy = "http://localhost:8001/";
 const pageSize = 40;
-
-function error(message) {
-	document.body.removeAttribute("class");
-	alert(message);
-}
 
 async function countProjects(url) {
 	let offset = 0;
@@ -13,7 +8,9 @@ async function countProjects(url) {
 	while (true) {
 		console.log(`Offset: ${offset}`);
 		console.log(`Delta: ${delta}`);
-		const page = await (await fetch(`${url}?limit=${pageSize}&offset=${offset}`)).json();
+		const res = await fetch(`${url}?limit=${pageSize}&offset=${offset}`);
+		if (res.status != 200) throw res.status;
+		const page = await res.json();
 		if (page.length) {
 			offset += delta;
 		} else if (delta > pageSize) {
@@ -28,17 +25,43 @@ async function countProjects(url) {
 	}
 }
 
-function go() {
-	const studio = document.querySelector("#studio-input").value;
+function go(studio) {
+	if (studio === undefined) {
+		studio = document.querySelector("#studio-input").value;
+		const match = studio.match(/https?:\/\/scratch\.mit\.edu\/studios\/(\d+)(\/.*)?/);
+		if (match) {
+			studio = match[1];
+		}
+	}
 	const apiUrlPrefix = proxy + "https://api.scratch.mit.edu/studios/" + studio + "/projects";
 	document.body.className = "waiting";
 	countProjects(apiUrlPrefix).then((count) => {
 		document.querySelector("#count").innerText = count;
 		document.body.className = "complete";
+	}).catch(() => {
+		document.body.className = "error";
 	});
 }
 
-document.querySelector("#ok").addEventListener("click", go);
+document.querySelector("#ok").addEventListener("click", () => go());
 document.querySelector("#studio-input").addEventListener("keyup", function(event) {
-	if (event.keyCode == 13) go();
+	if (event.key == "Enter") go();
 })
+
+fetch(proxy + "https://api.scratch.mit.edu/proxy/featured").then(async (res) => {
+	const featuredStudios = (await res.json()).community_featured_studios;
+	for (let example of featuredStudios) {
+		const item = document.createElement("li");
+		item.addEventListener("click", () => {
+			go(example.id);
+		});
+		document.querySelector("#examples").appendChild(item);
+		const thumbnail = document.createElement("img");
+		thumbnail.src = example.thumbnail_url;
+		thumbnail.draggable = false;
+		item.appendChild(thumbnail);
+		const title = document.createElement("span");
+		title.innerText = example.title;
+		item.appendChild(title);
+	}
+});

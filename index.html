@@ -9,10 +9,17 @@
 
 <body>
 <h1>Find the exact number of projects in a Scratch studio</h1>
-<p><label>Studio ID: <input type="text" id="studio-input" /></label> <button id="ok">Go</button></p>
+<p id="input-row"><label>Studio link or ID: <input type="text" id="studio-input" /></label> <button id="ok">Go</button></p>
 <progress>Please wait...</progress>
 <p id="result">This studio has <strong id="count">0</strong> projects.</p>
-<p id="footer">Exact Count is an open source project by MaxiMouse. <a href="https://github.com/mxmou/exactcount">View on GitHub</a></p>
+<p id="error">Unable to load projects. Make sure that the link is correct.</p>
+<h2>Example studios</h2>
+<ul id="examples"></ul>
+<p class="small">Source: <a href="https://scratch.mit.edu/">Scratch Featured Studios</a></p>
+<p id="footer">Exact Count is an open source project by Maximouse.
+  <a href="https://scratch.mit.edu/users/Maximouse/#comments">Feedback</a> |
+  <a href="https://github.com/mxmou/exactcount">View on GitHub</a>
+</p>
 
 <script src="exactcount.js"></script>
 </body>

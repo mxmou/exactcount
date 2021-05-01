@@ -2,10 +2,44 @@ body {
 	font: 16px Roboto, sans-serif;
 	text-align: center;
 }
+#input-row {
+	height: 32px;
+	display: flex;
+	justify-content: center;
+}
+#input-row > label {
+	flex-grow: 1;
+	max-width: 500px;
+	display: flex;
+	line-height: 32px;
+}
+#studio-input {
+	flex-grow: 1;
+	margin: 0 8px;
+}
+input, button {font: inherit;}
 body:not(.waiting) progress {display: none;}
 body:not(.complete) #result {display: none;}
+body:not(.error) #error {display: none;}
+#examples {padding: 0;}
+#examples > li {
+	display: block;
+	padding: 4px 0;
+	cursor: pointer;
+}
+#examples > li:hover {background-color: #f8f8f8;}
+#examples > li > img {
+	width: 85px;
+	height: 50px;
+	margin-right: 8px;
+}
+#examples > li > * {vertical-align: middle;}
+.small {
+	font-size: 12px;
+	font-style: italic;
+}
 #footer {
-	color: #666;
+	color: #aaa;
 	margin-top: 48px;
 }
-#footer a {color: blue}
+a {color: blue}
