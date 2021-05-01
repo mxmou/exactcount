@@ -1,59 +1,41 @@
-const proxy = "https://mxmou-gh-ca.herokuapp.com/";
-const pageSize = 60;
+// const proxy = "https://mxmou-gh-ca.herokuapp.com/";
+const proxy = "http://localhost:8001/";
+const pageSize = 40;
 
 function error(message) {
 	document.body.removeAttribute("class");
 	alert(message);
 }
 
-function countProjects(url, page, delta, callback) {
-	console.log("Page: " + page);
-	console.log("Delta: " + delta);
-	const request = new XMLHttpRequest();
-	request.open("GET", url + page + "/");
-	request.onreadystatechange = function() {
-		if (request.readyState == 4) {
-			if (request.status == 200) {
-				countProjects(url, page + delta, delta, callback);
-			} else if (request.status == 404) {
-				if (page != 1) {
-					if (delta == 1) {
-						const correctReq = new XMLHttpRequest();
-						correctReq.open("GET", url + (page - 1) + "/");
-						correctReq.onreadystatechange = function() {
-							if (correctReq.readyState == 4) {
-								if (correctReq.status == 200) {
-									const parser = new DOMParser();
-									const list = parser.parseFromString(
-										"<ul id='projects'>" + correctReq.responseText + "</ul>", "text/html"
-									);
-									let count = pageSize*(page - 2);
-									count += list.querySelector("#projects").querySelectorAll("ul > li").length;
-									callback(count);
-								} else error("Something went wrong.");
-							}
-						};
-					correctReq.send();
-					} else {
-						page -= delta;
-						delta /= 10;
-						countProjects(url, page + delta, delta, callback);
-					}
-				} else error("Studio with this ID does not exist.");
-			} else error("Studio with this ID does not exist.");
+async function countProjects(url) {
+	let offset = 0;
+	let delta = 100*pageSize;
+	while (true) {
+		console.log(`Offset: ${offset}`);
+		console.log(`Delta: ${delta}`);
+		const page = await (await fetch(`${url}?limit=${pageSize}&offset=${offset}`)).json();
+		if (page.length) {
+			offset += delta;
+		} else if (delta > pageSize) {
+			offset -= delta;
+			delta /= 10;
+			offset += delta;
+		} else {
+			offset -= delta;
+			const lastPage = await (await fetch(`${url}?limit=${pageSize}&offset=${offset}`)).json();
+			return offset + lastPage.length;
 		}
-	};
-	request.send();
+	}
 }
 
 function go() {
 	const studio = document.querySelector("#studio-input").value;
-	const apiUrlPrefix = proxy + "https://scratch.mit.edu/site-api/projects/in/" + studio + "/";
-	countProjects(apiUrlPrefix, 1, 100, function(count) {
+	const apiUrlPrefix = proxy + "https://api.scratch.mit.edu/studios/" + studio + "/projects";
+	document.body.className = "waiting";
+	countProjects(apiUrlPrefix).then((count) => {
 		document.querySelector("#count").innerText = count;
 		document.body.className = "complete";
 	});
-	document.body.className = "waiting";
 }
 
 document.querySelector("#ok").addEventListener("click", go);
