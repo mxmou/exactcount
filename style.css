@@ -2,6 +2,9 @@ body {
 	font: 16px Roboto, sans-serif;
 	text-align: center;
 }
+#subtitle {
+	font-weight: bold;
+}
 #input-row {
 	height: 32px;
 	display: flex;
