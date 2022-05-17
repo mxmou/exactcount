@@ -23,10 +23,13 @@ body {
 	margin: 0 8px;
 }
 input, button {font: inherit;}
+#status {
+	height: 1.2em;
+	line-height: 1.2em;
+}
 body:not(.waiting) progress {display: none;}
 body:not(.complete) #result {display: none;}
 body:not(.error) #error {display: none;}
-h2 {margin-top: 48px;}
 #examples {padding: 0;}
 #examples li {display: block;}
 #examples button {
