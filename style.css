@@ -8,19 +8,29 @@ body {
 	font-weight: bold;
 }
 #input-row {
-	height: 32px;
-	display: flex;
+	display: block;
 	justify-content: center;
 }
 #input-row > label {
 	flex-grow: 1;
 	max-width: 500px;
-	display: flex;
 	line-height: 32px;
+}
+@media (min-width: 600px) {
+	#input-row,
+	#input-row > label {
+		display: flex;
+	}
 }
 #studio-input {
 	flex-grow: 1;
 	margin: 0 8px;
+	height: 32px;
+	box-sizing: border-box;
+}
+#ok {
+	height: 32px;
+	box-sizing: border-box;
 }
 input, button {font: inherit;}
 #status {
