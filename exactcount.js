@@ -32,6 +32,8 @@ function go(studio) {
 		if (match) {
 			studio = match[1];
 		}
+	} else {
+		document.querySelector("#studio-input").value = `https://scratch.mit.edu/studios/${studio}`;
 	}
 	const apiUrlPrefix = proxy + "https://api.scratch.mit.edu/studios/" + studio + "/projects";
 	document.body.className = "waiting";
@@ -52,16 +54,19 @@ fetch(proxy + "https://api.scratch.mit.edu/proxy/featured").then(async (res) => 
 	const featuredStudios = (await res.json()).community_featured_studios;
 	for (let example of featuredStudios) {
 		const item = document.createElement("li");
-		item.addEventListener("click", () => {
+		document.querySelector("#examples").appendChild(item);
+		const button = document.createElement("button");
+		button.addEventListener("click", () => {
 			go(example.id);
 		});
-		document.querySelector("#examples").appendChild(item);
+		item.appendChild(button);
 		const thumbnail = document.createElement("img");
 		thumbnail.src = example.thumbnail_url;
+		thumbnail.alt = "";
 		thumbnail.draggable = false;
-		item.appendChild(thumbnail);
+		button.appendChild(thumbnail);
 		const title = document.createElement("span");
 		title.innerText = example.title;
-		item.appendChild(title);
+		button.appendChild(title);
 	}
 });
