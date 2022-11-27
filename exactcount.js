@@ -2,22 +2,19 @@ const api = "https://mxmou.eu.pythonanywhere.com/api/exactcount";
 const pageSize = 40;
 
 async function countProjects(url) {
-	let offset = 0;
-	let delta = 100*pageSize;
+	let min = 0;
+	let max = 128*pageSize;
 	while (true) {
-		console.log(`Offset: ${offset}`);
-		console.log(`Delta: ${delta}`);
+		let offset = (min + max)/2;
 		const res = await fetch(`${url}?limit=${pageSize}&offset=${offset}`);
 		if (res.status != 200) throw res.status;
 		const page = await res.json();
 		if (page.length) {
-			offset += delta;
-		} else if (delta > pageSize) {
-			offset -= delta;
-			delta /= 10;
-			offset += delta;
+			min = offset;
+		} else if (max - min > 2*pageSize) {
+			max = offset;
 		} else {
-			offset -= delta;
+			offset -= pageSize;
 			const lastPage = await (await fetch(`${url}?limit=${pageSize}&offset=${offset}`)).json();
 			return offset + lastPage.length;
 		}
