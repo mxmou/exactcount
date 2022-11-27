@@ -1,5 +1,4 @@
-const proxy = "https://mxmou-gh-ca.herokuapp.com/";
-// const proxy = "http://localhost:8001/";
+const api = "https://mxmou.eu.pythonanywhere.com/api/exactcount";
 const pageSize = 40;
 
 async function countProjects(url) {
@@ -35,7 +34,7 @@ function go(studio) {
 	} else {
 		document.querySelector("#studio-input").value = `https://scratch.mit.edu/studios/${studio}`;
 	}
-	const apiUrlPrefix = proxy + "https://api.scratch.mit.edu/studios/" + studio + "/projects";
+	const apiUrlPrefix = `${api}/studios/${studio}/projects`;
 	document.body.className = "waiting";
 	countProjects(apiUrlPrefix).then((count) => {
 		document.querySelector("#count").innerText = count;
@@ -50,7 +49,7 @@ document.querySelector("#studio-input").addEventListener("keyup", function(event
 	if (event.key == "Enter") go();
 })
 
-fetch(proxy + "https://api.scratch.mit.edu/proxy/featured").then(async (res) => {
+fetch(`${api}/proxy/featured`).then(async (res) => {
 	const featuredStudios = (await res.json()).community_featured_studios;
 	for (let example of featuredStudios) {
 		const item = document.createElement("li");
