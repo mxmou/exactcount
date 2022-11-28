@@ -1,23 +1,32 @@
 const api = "https://mxmou.eu.pythonanywhere.com/api/exactcount";
 const pageSize = 40;
 
+async function getPageLength(url, page, cache) {
+	if (Object.hasOwnProperty.call(cache, page)) return cache[page];
+	const res = await fetch(`${url}?limit=${pageSize}&offset=${page*pageSize}`);
+	if (res.status != 200) throw res.status;
+	const length = (await res.json()).length;
+	cache[page] = length;
+	return length;
+}
+
 async function countProjects(url) {
-	let min = 0;
-	let max = 128*pageSize;
+	let cache = {};
+	let minPage = 0;
+	let maxPage;
+	for (maxPage = 1;; maxPage *= 2) {
+		const length = await getPageLength(url, maxPage, cache);
+		if (!length) break;
+		minPage = maxPage;
+	}
 	while (true) {
-		let offset = (min + max)/2;
-		const res = await fetch(`${url}?limit=${pageSize}&offset=${offset}`);
-		if (res.status != 200) throw res.status;
-		const page = await res.json();
-		if (page.length) {
-			min = offset;
-		} else if (max - min > 2*pageSize) {
-			max = offset;
-		} else {
-			offset -= pageSize;
-			const lastPage = await (await fetch(`${url}?limit=${pageSize}&offset=${offset}`)).json();
-			return offset + lastPage.length;
+		if (maxPage - minPage <= 1) {
+			return minPage*pageSize + await getPageLength(url, minPage, cache);
 		}
+		const page = (minPage + maxPage)/2;
+		const length = await getPageLength(url, page, cache);
+		if (length) minPage = page;
+		else maxPage = page;
 	}
 }
 
