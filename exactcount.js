@@ -56,10 +56,11 @@ document.querySelector("#studio-input").addEventListener("keyup", function(event
 })
 
 fetch(`${api}/proxy/featured`).then(async (res) => {
+	document.querySelector("#examples").classList.remove("loading");
 	const featuredStudios = (await res.json()).community_featured_studios;
 	for (let example of featuredStudios) {
 		const item = document.createElement("li");
-		document.querySelector("#examples").appendChild(item);
+		document.querySelector("#examples ul").appendChild(item);
 		const button = document.createElement("button");
 		button.addEventListener("click", () => {
 			go(example.id);

@@ -37,14 +37,23 @@ input, button {font: inherit;}
 	height: 1.2em;
 	line-height: 1.2em;
 }
-body:not(.waiting) progress {display: none;}
-body:not(.complete) #result {display: none;}
-body:not(.error) #error {display: none;}
-#examples {padding: 0;}
+body:not(.waiting) #status progress {display: none;}
+body:not(.complete) #status .result {display: none;}
+body:not(.error) #status .error {display: none;}
+#examples {
+	height: calc(2em + 5*62px);
+}
+#examples:not(.loading) progress {display: none;}
+#examples ul {
+	margin: 1em;
+	padding: 0;
+}
 #examples li {display: block;}
 #examples button {
 	display: inline-block;
-	padding: 4px;
+	box-sizing: border-box;
+	height: 62px;
+	padding: 0 4px;
 }
 #examples button:not(:hover) {
 	background-color: transparent;
