@@ -5,9 +5,29 @@ body {
 	text-align: center;
 	color-scheme: light dark;
 }
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #222;
+		color: white;
+	}
+}
+a {
+	color: blue;
+}
+@media (prefers-color-scheme: dark) {
+	a {
+		color: lightskyblue;
+	}
+}
+input,
+button {
+	font: inherit;
+}
+
 #subtitle {
 	font-weight: bold;
 }
+
 #input-row {
 	display: block;
 	justify-content: center;
@@ -33,54 +53,60 @@ body {
 	height: 32px;
 	box-sizing: border-box;
 }
-input, button {font: inherit;}
+
 #status {
 	height: 1.2em;
 	line-height: 1.2em;
 }
-body:not(.waiting) #status progress {display: none;}
-body:not(.complete) #status .result {display: none;}
-body:not(.error) #status .error {display: none;}
+body:not(.waiting) #status progress,
+body:not(.complete) #status .result,
+body:not(.error) #status .error {
+	display: none;
+}
+
 #examples {
 	height: calc(2em + 5*62px);
 }
-#examples:not(.loading) progress {display: none;}
+#examples:not(.loading) progress {
+	display: none;
+}
 #examples ul {
 	margin: 1em;
 	padding: 0;
 }
-#examples li {display: block;}
+#examples li {
+	display: block;
+}
 #examples button {
 	display: inline-block;
-	box-sizing: border-box;
 	height: 62px;
+	box-sizing: border-box;
 	padding: 0 4px;
 }
 #examples button:not(:hover) {
 	background-color: transparent;
 	border-color: transparent;
 }
+#examples button > * {
+	vertical-align: middle;
+}
 #examples button > img {
 	width: 85px;
 	height: 50px;
 	margin-right: 8px;
 }
-#examples button > * {vertical-align: middle;}
+
 .small {
 	font-size: 12px;
 	font-style: italic;
 }
+
 #footer {
 	color: #606060;
 	margin-top: 48px;
 }
-a {color: blue}
-
 @media (prefers-color-scheme: dark) {
-	body {
-		background-color: #222;
-		color: white;
+	#footer {
+		color: #aaa;
 	}
-	#footer {color: #aaa;}
-	a {color: lightskyblue;}
 }
