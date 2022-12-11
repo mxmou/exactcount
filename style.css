@@ -3,6 +3,7 @@ body {
 	color: #222;
 	font: 16px sans-serif;
 	text-align: center;
+	color-scheme: light dark;
 }
 #subtitle {
 	font-weight: bold;
@@ -74,3 +75,12 @@ body:not(.error) #status .error {display: none;}
 	margin-top: 48px;
 }
 a {color: blue}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #222;
+		color: white;
+	}
+	#footer {color: #aaa;}
+	a {color: lightskyblue;}
+}
