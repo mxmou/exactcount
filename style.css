@@ -61,7 +61,7 @@ body:not(.error) #error {display: none;}
 	font-style: italic;
 }
 #footer {
-	color: #aaa;
+	color: #606060;
 	margin-top: 48px;
 }
 a {color: blue}
