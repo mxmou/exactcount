@@ -78,17 +78,15 @@ body:not(.error) #status .error {
 	display: block;
 }
 #examples button {
-	display: inline-block;
-	height: 62px;
+	display: inline-flex;
+	min-height: 62px;
 	box-sizing: border-box;
 	padding: 0 4px;
+	align-items: center;
 }
 #examples button:not(:hover) {
 	background-color: transparent;
 	border-color: transparent;
-}
-#examples button > * {
-	vertical-align: middle;
 }
 #examples button > img {
 	width: 85px;
