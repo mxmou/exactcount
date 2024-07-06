@@ -19,6 +19,7 @@ async function countProjects(url) {
 	for (maxPage = 1;; maxPage *= 2) {
 		const length = await getPageLength(url, maxPage, cache);
 		if (!length) break;
+		else if (length < pageSize) return maxPage*pageSize + length;
 		minPage = maxPage;
 	}
 	while (true) {
