@@ -1,9 +1,11 @@
+:root {
+	color-scheme: light dark;
+}
 body {
 	background-color: white;
 	color: #222;
 	font: 16px sans-serif;
 	text-align: center;
-	color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
 	body {
