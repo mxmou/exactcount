@@ -30,7 +30,7 @@ async function countProjects(url) {
 		const length = await getPageLength(url, page, cache);
 		if (length) {
 			minPage = page;
-			if (length < pageSize) return page * pageSize + length;
+			if (length < pageSize) return page*pageSize + length;
 		} else {
 			maxPage = page;
 		}
