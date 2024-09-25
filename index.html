@@ -12,11 +12,17 @@
 
 <body>
 <h1>Exact count</h1>
-<p id="subtitle">Find the exact number of projects in a Scratch studio</p>
-<p id="input-row"><label>Studio link or ID: <input type="text" id="studio-input" /></label> <button id="ok">Go</button></p>
+<p id="subtitle">Find the exact number of projects and curators in a Scratch studio</p>
+<p class="input-row"><label>Studio link or ID: <input type="text" id="studio-input" /></label></p>
+<p class="input-row">
+  <button class="default" id="projects-button">Show project count</button>
+  <button id="curators-button">Show curator count</button>
+</p>
 <p id="status">
   <progress>Please wait...</progress>
-  <span class="result">This studio has <strong id="count">0</strong> projects.</span>
+  <span class="projects-result">This studio has <strong id="project-count">0</strong> projects.</span>
+  <span class="curators-result">This studio has <strong id="manager-count">0</strong> managers
+    and <strong id="curator-count">0</strong> curators.</span>
   <span class="error">Unable to load projects. Make sure that the link is correct.</span>
 </p>
 <h2>Example studios</h2>

@@ -30,30 +30,36 @@ button {
 	font-weight: bold;
 }
 
-#input-row {
+.input-row {
 	display: block;
 	justify-content: center;
 }
-#input-row > label {
+.input-row > label {
 	flex-grow: 1;
 	max-width: 500px;
 	line-height: 32px;
 }
 @media (min-width: 600px) {
-	#input-row,
-	#input-row > label {
+	.input-row,
+	.input-row > label {
 		display: flex;
 	}
 }
 #studio-input {
 	flex-grow: 1;
-	margin: 0 8px;
+	margin-left: 8px;
 	height: 32px;
 	box-sizing: border-box;
 }
-#ok {
+.input-row > button {
 	height: 32px;
 	box-sizing: border-box;
+}
+.input-row > button + button {
+	margin-left: 8px;
+}
+.input-row > button.default {
+	font-weight: bold;
 }
 
 #status {
@@ -61,19 +67,21 @@ button {
 	line-height: 1.2em;
 }
 body:not(.waiting) #status progress,
-body:not(.complete) #status .result,
+body:not(.projects-complete) #status .projects-result,
+body:not(.curators-complete) #status .curators-result,
 body:not(.error) #status .error {
 	display: none;
 }
 
 #examples {
-	height: calc(2em + 5*62px);
+	height: calc(5*62px);
 }
 #examples:not(.loading) progress {
 	display: none;
 }
 #examples ul {
 	margin: 1em;
+	margin-bottom: 0;
 	padding: 0;
 }
 #examples li {

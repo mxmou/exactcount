@@ -2,6 +2,7 @@ const api = "https://mxmou.eu.pythonanywhere.com/api/exactcount";
 const pageSize = 40;
 
 let currentStudio = "";
+let currentMode = "projects";
 
 async function getPageLength(url, page, cache) {
 	if (Object.hasOwnProperty.call(cache, page)) return cache[page];
@@ -12,7 +13,7 @@ async function getPageLength(url, page, cache) {
 	return length;
 }
 
-async function countProjects(url) {
+async function getCount(url) {
 	let cache = {};
 	let minPage = 0;
 	let maxPage;
@@ -37,7 +38,7 @@ async function countProjects(url) {
 	}
 }
 
-function go(studio) {
+function go(mode, studio) {
 	if (studio === undefined) {
 		studio = document.querySelector("#studio-input").value;
 		const match = studio.match(/https?:\/\/scratch\.mit\.edu\/studios\/(\d+)(\/.*)?/);
@@ -48,33 +49,56 @@ function go(studio) {
 		document.querySelector("#studio-input").value = `https://scratch.mit.edu/studios/${studio}`;
 	}
 	currentStudio = studio;
-	location.hash = `#${studio}`;
-	const apiUrlPrefix = `${api}/studios/${studio}/projects`;
-	document.body.className = "waiting";
-	countProjects(apiUrlPrefix).then((count) => {
-		document.querySelector("#count").innerText = count;
-		document.body.className = "complete";
-	}).catch(() => {
-		document.body.className = "error";
-	});
+	currentMode = mode;
+	document.querySelector("#projects-button").classList.toggle("default", mode === "projects");
+	document.querySelector("#curators-button").classList.toggle("default", mode === "curators");
+	switch (mode) {
+	case "projects":
+		location.hash = `#${studio}`;
+		document.body.className = "waiting";
+		getCount(`${api}/studios/${studio}/projects`).then((count) => {
+			document.querySelector("#project-count").innerText = count;
+			document.body.className = "projects-complete";
+		}).catch(() => {
+			document.body.className = "error";
+		});
+		break;
+	case "curators":
+		location.hash = `#${studio}/curators`;
+		document.body.className = "waiting";
+		Promise.all([
+			getCount(`${api}/studios/${studio}/managers`),
+			getCount(`${api}/studios/${studio}/curators`),
+		]).then(([managers, curators]) => {
+			document.querySelector("#manager-count").innerText = managers;
+			document.querySelector("#curator-count").innerText = curators;
+			document.body.className = "curators-complete";
+		}).catch(() => {
+			document.body.className = "error";
+		});
+		break;
+	}
 }
 
-document.querySelector("#ok").addEventListener("click", () => go());
+document.querySelector("#projects-button").addEventListener("click", () => go("projects"));
+document.querySelector("#curators-button").addEventListener("click", () => go("curators"));
 document.querySelector("#studio-input").addEventListener("keyup", function(event) {
-	if (event.key == "Enter") go();
+	if (event.key === "Enter") go(currentMode);
 })
 
 function handleHash() {
-	const studio = location.hash.slice(1);
-	// Don't do anything if the hash change was caused by clicking "Go"
-	if (studio == currentStudio) return;
+	const parts = location.hash.slice(1).split("/");
+	const studio = parts[0];
+	const mode = parts[1] || "projects";
+	// Don't do anything if the hash change was caused by clicking "Show count"
+	if (studio === currentStudio && mode === currentMode) return;
 	if (!studio) {
 		document.querySelector("#studio-input").value = "";
 		document.body.className = ""; // Hide result from previous studio
 		currentStudio = "";
 		return;
 	}
-	go(studio);
+	go(mode, studio);
 }
 if (location.hash) handleHash();
 window.addEventListener("hashchange", () => handleHash());
@@ -87,7 +111,7 @@ fetch(`${api}/proxy/featured`).then(async (res) => {
 		document.querySelector("#examples ul").appendChild(item);
 		const button = document.createElement("button");
 		button.addEventListener("click", () => {
-			go(example.id);
+			go(currentMode, example.id);
 		});
 		item.appendChild(button);
 		const thumbnail = document.createElement("img");
