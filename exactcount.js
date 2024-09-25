@@ -60,7 +60,7 @@ function go(mode, studio) {
 			document.querySelector("#project-count").innerText = count;
 			document.body.className = "projects-complete";
 		}).catch(() => {
-			document.body.className = "error";
+			document.body.className = "projects-error";
 		});
 		break;
 	case "curators":
@@ -74,7 +74,7 @@ function go(mode, studio) {
 			document.querySelector("#curator-count").innerText = curators;
 			document.body.className = "curators-complete";
 		}).catch(() => {
-			document.body.className = "error";
+			document.body.className = "curators-error";
 		});
 		break;
 	}

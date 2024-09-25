@@ -69,7 +69,8 @@ button {
 body:not(.waiting) #status progress,
 body:not(.projects-complete) #status .projects-result,
 body:not(.curators-complete) #status .curators-result,
-body:not(.error) #status .error {
+body:not(.projects-error) #status .projects-error,
+body:not(.curators-error) #status .curators-error {
 	display: none;
 }
 
